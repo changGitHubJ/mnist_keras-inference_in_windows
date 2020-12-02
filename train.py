@@ -13,8 +13,8 @@ n_hidden_2 = 256
 
 # Parameter
 learning_rate = 0.0001
-training_epochs = 12
-batch_size = 128
+training_epochs = 200
+batch_size = 2048
 display_step = 1
 TRAIN_DATA_SIZE = 10000
 VALID_DATA_SIZE = 500
@@ -37,7 +37,10 @@ if __name__=='__main__':
     input_shape = (IMG_SIZE, IMG_SIZE, 1)
 
     model = model.Model(batch_size, OUTPUT_SIZE, training_epochs)
-    model.create_model(input_shape)
+    model.create_model(input_shape, multi_gpu=True)
+    start = time.time()
     model.training(x_train, y_train, x_valid, y_valid)
+    elapsed_time = time.time() - start
+    print("time = %f"%elapsed_time)
     model.evaluate(x_test, y_test)
     model.save('./model.h5')
